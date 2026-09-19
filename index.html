@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI SIGNAL / AI 资讯雷达</title>
+  <meta name="description" content="经核验的全球 AI 资讯简报，覆盖主要实验室、科技公司与中文公开渠道。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Cpath d='M16 45 29 17h7l12 28h-8l-2-6H26l-2 6zm13-13h7l-3-9z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#090909;--paper:#f3f3f0;--muted:#777;--line:#c9c9c3;--white:#fff;--ease:cubic-bezier(.2,.8,.2,1)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:16px;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .shell{max-width:1480px;margin:auto;padding:0 28px}
+    .mast{position:sticky;top:0;z-index:20;background:rgba(243,243,240,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--ink)}
+    .mast-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-weight:900;letter-spacing:-.05em;font-size:1.4rem}.brand i{font-style:normal;font-weight:400;color:var(--muted)}
+    .issue{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;text-align:right}
+    .hero{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,.55fr);min-height:520px;border-bottom:1px solid var(--ink)}
+    .hero-main{padding:68px 48px 56px 0;border-right:1px solid var(--ink);display:flex;flex-direction:column;justify-content:space-between}
+    .kicker{display:flex;align-items:center;gap:10px;font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .pulse{width:8px;height:8px;border-radius:50%;background:#111;box-shadow:0 0 0 0 rgba(0,0,0,.4);animation:pulse 2s infinite}
+    @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(0,0,0,0)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+    h1{font-size:clamp(4rem,9vw,9rem);line-height:.84;letter-spacing:-.085em;margin:42px 0 24px;max-width:950px}
+    h1 span{display:block;font-weight:400;color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+    .standfirst{max-width:690px;font-size:clamp(1rem,1.5vw,1.25rem);color:#383838;margin:0}
+    .hero-side{padding:64px 0 56px 38px;display:flex;flex-direction:column;justify-content:space-between}
+    .metric{padding:0 0 28px;border-bottom:1px solid var(--line);margin-bottom:28px}.metric strong{display:block;font-size:3.4rem;line-height:1;letter-spacing:-.06em}.metric span{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+    .channels{display:flex;flex-wrap:wrap;gap:8px}.channels span{border:1px solid var(--ink);border-radius:99px;padding:6px 10px;font-size:.72rem;background:transparent}
+    .channels .muted{border-color:var(--line);color:var(--muted)}
+    .bar{border-bottom:1px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;position:sticky;top:72px;background:rgba(243,243,240,.94);backdrop-filter:blur(12px);z-index:15}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:transparent;border-radius:99px;padding:7px 13px;cursor:pointer;transition:.2s var(--ease);font-size:.82rem}.filter:hover,.filter.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
+    .sort{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--muted);font-size:.74rem;white-space:nowrap}
+    .feed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-left:1px solid var(--ink)}
+    article{min-height:390px;padding:28px 30px 26px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column;transition:background .25s var(--ease),color .25s var(--ease)}
+    article:hover{background:var(--ink);color:var(--white)}article:hover .meta,article:hover .context,article:hover .source-note{color:#bcbcbc}article:hover .tag,article:hover .verify{border-color:#555}article:hover .read{border-color:#fff}
+    article.is-hidden{display:none}
+    .card-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.meta{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted)}
+    .verify{font-size:.7rem;border:1px solid var(--line);padding:4px 8px;border-radius:99px;white-space:nowrap}.verify:before{content:"✓";margin-right:5px}
+    h2{font-size:clamp(1.55rem,2.5vw,2.45rem);line-height:1.08;letter-spacing:-.045em;margin:38px 0 16px;max-width:660px}
+    .context{font-size:.85rem;color:var(--muted);margin-bottom:10px}.summary{margin:0 0 28px;max-width:650px}
+    .card-foot{margin-top:auto;display:flex;align-items:end;justify-content:space-between;gap:14px}.source-note{font-size:.75rem;color:var(--muted);max-width:70%}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}.tag{font-size:.68rem;border:1px solid var(--line);padding:3px 7px;border-radius:99px}
+    .read{width:42px;height:42px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;transition:transform .2s var(--ease);font-size:1.1rem}.read:hover{transform:rotate(-45deg)}
+    .method{display:grid;grid-template-columns:.7fr 1.3fr;border-bottom:1px solid var(--ink)}.method-title{padding:54px 34px 54px 0;border-right:1px solid var(--ink)}.method-title h3{font-size:2.4rem;line-height:1;letter-spacing:-.05em;margin:0 0 18px}.method-title p{color:var(--muted);margin:0}.method-grid{display:grid;grid-template-columns:repeat(3,1fr)}.step{padding:54px 24px;border-right:1px solid var(--line)}.step:last-child{border-right:0}.num{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--muted);font-size:.76rem}.step strong{display:block;font-size:1.1rem;margin:18px 0 8px}.step p{margin:0;color:#555;font-size:.86rem}
+    footer{padding:34px 0 48px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}.footer-brand{font-size:2rem;font-weight:900;letter-spacing:-.06em}.fine{font-size:.72rem;color:var(--muted);max-width:580px;text-align:right}
+    .empty{display:none;padding:70px 0;text-align:center;color:var(--muted);border-bottom:1px solid var(--ink)}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto}.hero-main{border-right:0;border-bottom:1px solid var(--ink);padding-right:0}.hero-side{padding:34px 0}.feed{grid-template-columns:1fr}.method{grid-template-columns:1fr}.method-title{border-right:0;border-bottom:1px solid var(--ink)}.method-grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}h1{font-size:clamp(3.6rem,17vw,7rem)}article{min-height:350px}}
+    @media(max-width:560px){.shell{padding:0 18px}.mast-inner{height:62px}.bar{top:62px;align-items:flex-start;flex-direction:column}.sort{display:none}.hero-main{padding-top:48px}.hero-side{padding-left:0}h1{margin-top:32px}.issue{font-size:.65rem}.feed{margin-left:-18px;margin-right:-18px}.feed article{padding:24px 18px}.method-title{padding-right:0}.method-grid{margin:0 -18px}.step{padding:38px 18px}footer{align-items:flex-start;flex-direction:column}.fine{text-align:left}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}.pulse{animation:none}}
+  </style>
+</head>
+<body>
+  <header class="mast"><div class="shell mast-inner"><a class="brand" href="#top">AI SIGNAL <i>/ 情报雷达</i></a><div class="issue">ISSUE 001<br>2026.09.19 · CST</div></div></header>
+  <main id="top" class="shell">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="kicker"><span class="pulse"></span> Verified intelligence / 人工核验</div>
+        <div><h1>AI NEWS,<span>DISTILLED.</span></h1><p class="standfirst">从公开渠道中去噪，只保留影响产品、组织与治理判断的信号。本期聚焦智能体基础设施、企业落地、模型效率与前沿安全。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div><div class="metric"><strong>08</strong><span>Selected signals / 精选资讯</span></div><div class="metric"><strong>12</strong><span>Primary & cross-check sources</span></div></div>
+        <div><div class="kicker" style="margin-bottom:14px">Monitoring scope</div><div class="channels"><span>OpenAI</span><span>Google</span><span>Microsoft</span><span>Anthropic</span><span>Baidu</span><span>Tencent</span><span>知乎</span><span>微博</span><span class="muted">微信公众号 · 持续监测</span></div></div>
+      </aside>
+    </section>
+
+    <section class="bar" aria-label="资讯筛选"><div class="filters"><button class="filter active" data-filter="all">全部 08</button><button class="filter" data-filter="product">产品</button><button class="filter" data-filter="business">商业</button><button class="filter" data-filter="research">研究</button><button class="filter" data-filter="policy">治理</button><button class="filter" data-filter="china">中国</button></div><div class="sort">LATEST → OLDEST</div></section>
+
+    <section class="feed" id="feed">
+      <article data-cat="policy business"><div class="card-top"><div class="meta">SEP 18 · 2026 / 01</div><div class="verify">双源核验</div></div><h2>Anthropic 与 Accenture 试水“嵌入式评估”</h2><div class="context">背景｜前沿模型评估正从发布前抽检，转向研发流程内的持续观察。</div><p class="summary">双方宣布由 Accenture 旗下 Faculty 参与模型红队、对齐与安全机制评估，并计划五年内分别投入至少 10 亿美元建设相关能力。关键变化不是“多一次审计”，而是第三方获得更接近内部员工的观察权限。</p><div class="card-foot"><div><div class="source-note">来源：Anthropic 官方公告；Anthropic Newsroom 索引交叉确认</div><div class="tags"><span class="tag">ANTHROPIC</span><span class="tag">SAFETY</span></div></div><a class="read" href="https://www.anthropic.com/news/accenture-embedded-evaluation" target="_blank" rel="noopener" aria-label="阅读 Anthropic 原文">↗</a></div></article>
+
+      <article data-cat="business"><div class="card-top"><div class="meta">SEP 17 · 2026 / 02</div><div class="verify">官方原文</div></div><h2>微软公布企业 AI 转型的五条实战经验</h2><div class="context">背景｜AI 采购规模持续扩大，但“有使用率”并不等于“产生业务价值”。</div><p class="summary">Microsoft 以内部 Customer Zero 实践总结：从业务结果出发、重构端到端流程、建立跨职能治理。其披露的案例包括部分销售团队成交率提升 20%，以及部分供应链流程周期缩短最多 75%；这些数字均附有样本与时间范围说明。</p><div class="card-foot"><div><div class="source-note">来源：Microsoft Official Blog；内部数据口径见原文脚注</div><div class="tags"><span class="tag">MICROSOFT</span><span class="tag">ENTERPRISE</span></div></div><a class="read" href="https://blogs.microsoft.com/blog/2026/09/17/what-weve-learned-from-microsofts-own-ai-transformation/" target="_blank" rel="noopener" aria-label="阅读 Microsoft 原文">↗</a></div></article>
+
+      <article data-cat="policy china"><div class="card-top"><div class="meta">SEP 17 · 2026 / 03</div><div class="verify">官媒交叉核验</div></div><h2>AI 安全治理框架进入 3.0 阶段</h2><div class="context">背景｜智能体、供应链与合成内容风险，正在突破传统网络安全边界。</div><p class="summary">国家网信办相关活动发布《人工智能安全治理框架 3.0》，延续“风险分类、技术应对、综合治理”逻辑，并强调 AI 供应链的持续验证。微博端关于 AI 风险的话题升温，但本条仅采用中国网信网与新华网可确认的内容。</p><div class="card-foot"><div><div class="source-note">来源：中国网信网；新华网；微博仅作热度观察，不作事实源</div><div class="tags"><span class="tag">微博观察</span><span class="tag">GOVERNANCE</span><span class="tag">CHINA</span></div></div><a class="read" href="https://www.cac.gov.cn/2026-09/17/c_1791397055272457.htm" target="_blank" rel="noopener" aria-label="阅读中国网信网原文">↗</a></div></article>
+
+      <article data-cat="product china"><div class="card-top"><div class="meta">SEP 16 · 2026 / 04</div><div class="verify">官方产品页</div></div><h2>百度 Flex 语音语言模型开放公测</h2><div class="context">背景｜语音 Agent 的竞争正从“听懂和回答”转向“听懂并调用工具完成任务”。</div><p class="summary">百度 AI 开放平台上线端到端语音语言模型 Flex 公测，重点能力是 Function Call，让语音交互可连接业务动作。相较单纯语音合成，这类模型更接近实时任务执行入口。</p><div class="card-foot"><div><div class="source-note">来源：百度 AI 开放平台新闻页与产品首页双页确认</div><div class="tags"><span class="tag">BAIDU</span><span class="tag">VOICE AGENT</span></div></div><a class="read" href="https://ai.baidu.com/support/news?module=AIOfficialWeb&tag=13" target="_blank" rel="noopener" aria-label="阅读百度官方资讯">↗</a></div></article>
+
+      <article data-cat="business china"><div class="card-top"><div class="meta">SEP 16 · 2026 / 05</div><div class="verify">官方原文</div></div><h2>腾讯把 AI 素养培训延伸到香港师生</h2><div class="context">背景｜基础模型之外，科技公司开始争夺教育、人才与生态入口。</div><p class="summary">腾讯 WeTech Academy 与香港教育局启动“AI for All”，包括微信小程序创新挑战赛新赛季，以及腾讯云与香港教育城合作的教师 AI 课程。信号在于：AI 普及正从工具培训转向“课程 + 赛事 + 平台”的长期生态。</p><div class="card-foot"><div><div class="source-note">来源：腾讯集团官方新闻稿；腾讯 Newsroom 列表复核日期</div><div class="tags"><span class="tag">TENCENT</span><span class="tag">EDUCATION</span></div></div><a class="read" href="https://www.tencent.com/zh-cn/ai-for-all-initiative-to-build-practical-ai-skills-for-students-and-teachers-in-hong-kong/" target="_blank" rel="noopener" aria-label="阅读腾讯官方原文">↗</a></div></article>
+
+      <article data-cat="research business"><div class="card-top"><div class="meta">SEP 15 · 2026 / 06</div><div class="verify">官方研究摘要</div></div><h2>Google ATLAS 显示：科学家每周因 AI 节省近 7 小时</h2><div class="context">背景｜AI 对知识工作的影响，开始从“感觉更快”转向可比较的职业数据。</div><p class="summary">Google 更新 AI & Economy ATLAS，并发布与 Google DeepMind、MIT FutureTech 合作的研究摘要：近半数受访科学家每天使用某种 AI，平均每周节省接近 7 小时；同时验证、实验与临床环节出现新的瓶颈。</p><div class="card-foot"><div><div class="source-note">来源：Google 官方博客；样本含 600+ 位美英科学家与 2,600 个专业模型</div><div class="tags"><span class="tag">GOOGLE</span><span class="tag">SCIENCE</span></div></div><a class="read" href="https://blog.google/innovation-and-ai/technology/ai/ai-economy-atlas-september-2026/" target="_blank" rel="noopener" aria-label="阅读 Google 原文">↗</a></div></article>
+
+      <article data-cat="product research china"><div class="card-top"><div class="meta">SEP 10 · 2026 / 07</div><div class="verify">源代码仓库核验</div></div><h2>DeepSeek V4.1 Flash 把 Agent 成本打向缓存层</h2><div class="context">背景｜长上下文 Agent 的主要成本之一，来自持续增长的 KV Cache。</div><p class="summary">V4.1 Flash 采用非对称 Causal Encoder–Decoder 架构，原生处理图文，支持最长 100 万 token 上下文。官方模型卡称其持久化 KV Cache 相比 V4 Flash 缩至约四分之一；知乎讨论提供市场热度，但参数以官方模型卡为准。</p><div class="card-foot"><div><div class="source-note">来源：DeepSeek 官方 Hugging Face 模型卡；知乎话题交叉观察</div><div class="tags"><span class="tag">知乎热议</span><span class="tag">DEEPSEEK</span><span class="tag">OPEN MODEL</span></div></div><a class="read" href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash" target="_blank" rel="noopener" aria-label="阅读 DeepSeek 模型卡">↗</a></div></article>
+
+      <article data-cat="product"><div class="card-top"><div class="meta">SEP 10 · 2026 / 08</div><div class="verify">官方 + 社区复核</div></div><h2>OpenAI Agents API 开放公测</h2><div class="context">背景｜开发者过去需要自行拼接循环、上下文、工具与执行环境。</div><p class="summary">OpenAI 推出 Agents API 公测，把 Codex 使用的长任务编排、上下文压缩、工具搜索和子代理协调能力开放给开发者；可选择托管沙箱或自有基础设施。官方开发者社区同步公告，确认当前按模型与工具用量计费。</p><div class="card-foot"><div><div class="source-note">来源：OpenAI 产品公告；OpenAI Developer Community 同步确认</div><div class="tags"><span class="tag">OPENAI</span><span class="tag">AGENTS API</span></div></div><a class="read" href="https://openai.com/index/introducing-the-agents-api/" target="_blank" rel="noopener" aria-label="阅读 OpenAI 原文">↗</a></div></article>
+    </section>
+    <div class="empty" id="empty">此分类暂无条目。</div>
+
+    <section class="method">
+      <div class="method-title"><h3>核验方法</h3><p>宁可少收一条，也不把“热议”写成“事实”。公众号内容若无法回溯到公开原文，本期不入选。</p></div>
+      <div class="method-grid"><div class="step"><span class="num">01 / DISCOVER</span><strong>多渠道发现</strong><p>追踪公司新闻室、产品页、研究机构，以及知乎、微博、微信公众号的公开线索。</p></div><div class="step"><span class="num">02 / VERIFY</span><strong>回到第一信源</strong><p>产品、数字与发布日期优先以官方公告、论文或模型仓库为准，社交内容仅作线索。</p></div><div class="step"><span class="num">03 / DISTILL</span><strong>提炼决策信号</strong><p>按时间、背景、核心内容与渠道整理，并明确样本范围、官方口径和待确认项。</p></div></div>
+    </section>
+  </main>
+  <footer class="shell"><div class="footer-brand">AI SIGNAL</div><div class="fine">本页截至 2026-09-19 公开信息。摘要为编辑提炼，不构成投资或产品采购建议。所有外链指向原始或主要核验来源。</div></footer>
+  <script>
+    const filters=[...document.querySelectorAll('.filter')];
+    const cards=[...document.querySelectorAll('article[data-cat]')];
+    const empty=document.getElementById('empty');
+    filters.forEach(btn=>btn.addEventListener('click',()=>{
+      filters.forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+      const key=btn.dataset.filter;let visible=0;
+      cards.forEach(card=>{const show=key==='all'||card.dataset.cat.split(' ').includes(key);card.classList.toggle('is-hidden',!show);if(show)visible++;});
+      empty.style.display=visible?'none':'block';
+    }));
+  </script>
+</body>
+</html>
+
